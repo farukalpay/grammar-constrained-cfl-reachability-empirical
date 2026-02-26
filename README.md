@@ -1,122 +1,102 @@
-# Empirical Companion for "Grammar-Constrained (CFL) Reachability"
+# Grammar-Constrained (CFL) Reachability - Empirical Schema Analysis
 
-## Subcubic Preprocessing, Indexing Trade-offs, and Structured Decoding Semantics
+This repository contains the empirical part of the manuscript:
+"Grammar-Constrained (CFL) Reachability: Subcubic Preprocessing, Indexing Trade-offs, and Structured Decoding Semantics".
 
-This repository contains the empirical pipeline used in the manuscript section that analyzes JSON schema structure under CFG-based linear vs general classification.
+It focuses on JSON schema analysis: JSONSchemaBench loading, JSON Schema -> CFG conversion, and linear vs general grammar classification.
 
-## Manuscript-aligned scope
+## What is included
 
-The code in this repo covers:
+- `schema_cfg_analyzer.py`: main analysis pipeline
+- `plot_schema_analysis.py`: matplotlib plotting script
+- `schema_analysis.csv`: per-schema metrics (generated)
+- `class_distribution.png`: class distribution figure (generated)
+- `schema_size_vs_is_linear.png`: schema-size vs class figure (generated)
 
-- JSONSchemaBench loading (`epfl-dlab/JSONSchemaBench`)
-- JSON Schema to structural CFG conversion
-- Linear vs general CFG classification
-- Manuscript tables (A-E) printed to console
-- Per-schema export to `schema_analysis.csv`
-- Figure generation with matplotlib
+## Why this classification looks this way
 
-This repo does not implement the full reachability/indexing algorithms from the theory sections; it is the empirical validation companion for the schema-structure analysis.
+- Object properties are modeled as chained productions (linear-friendly).
+- Variable-length arrays use recursive list productions (`ITEMS -> Item | Item ',' ITEMS`), which introduce non-linearity.
 
-## Conversion design used by the manuscript
+## Quick start
 
-- Object properties are modeled as chained productions, keeping productions linear-friendly.
-- Variable-length arrays are modeled with recursive item-list productions (`ITEMS -> Item | Item ',' ITEMS`), introducing non-linearity.
-
-This modeling choice is the key bridge between schema structure and the linear/general grammar split reported in the paper.
-
-## Repository files
-
-- `schema_cfg_analyzer.py`: end-to-end analysis pipeline
-- `plot_schema_analysis.py`: plot generation from CSV output
-- `schema_analysis.csv`: per-schema metrics
-- `class_distribution.png`: grammar class distribution figure
-- `schema_size_vs_is_linear.png`: schema-size-vs-class figure
-
-## Requirements
-
-- Python 3.10+
-- pip
-
-Install dependencies:
+Install:
 
 ```bash
 python3 -m pip install datasets jsonschema huggingface_hub matplotlib
 ```
 
-## Reproduce the analysis
-
-Run:
+Run analysis:
 
 ```bash
 python3 schema_cfg_analyzer.py
 ```
 
-If Hugging Face auth is required:
+If auth is required:
 
 ```bash
 huggingface-cli login
 ```
 
-Or:
+or
 
 ```bash
 HF_TOKEN=your_token_here python3 schema_cfg_analyzer.py
 ```
 
-## Generated outputs
-
-- Table A: dataset-level linear vs general distribution
-- Table B: non-linearity sources (`array`, `nested object`, `$ref`)
-- Table C: `|P|` and `|N|` distribution statistics
-- Table D: LaTeX-ready summary table
-- Table E: schema byte size vs grammar class summary
-- `schema_analysis.csv`: one row per schema
-
-## CSV columns
-
-- `dataset`
-- `schema_id`
-- `num_productions`
-- `num_nonterminals`
-- `num_terminals`
-- `max_rhs_nt`
-- `nonlinear_productions`
-- `is_linear`
-- `has_recursion`
-- `has_array`
-- `has_nested_object`
-- `schema_size`
-- `error`
-
-## Generate figures
-
-Run:
+Generate figures:
 
 ```bash
 python3 plot_schema_analysis.py
 ```
 
-This creates:
+## Outputs
 
-- `class_distribution.png`
-- `schema_size_vs_is_linear.png`
+Console tables:
+
+- Table A: linear vs general by dataset
+- Table B: non-linearity sources (`array`, `nested object`, `$ref`)
+- Table C: `|P|` and `|N|` distribution stats
+- Table D: LaTeX-ready summary table
+- Table E: schema size vs grammar class summary
+
+CSV columns in `schema_analysis.csv`:
+
+- `dataset`, `schema_id`, `num_productions`, `num_nonterminals`, `num_terminals`
+- `max_rhs_nt`, `nonlinear_productions`, `is_linear`
+- `has_recursion`, `has_array`, `has_nested_object`
+- `schema_size`, `error`
 
 ## Figures
 
-### Grammar Class Distribution
-
 ![Grammar Class Distribution](./class_distribution.png)
-
-### Schema Size vs Grammar Class
 
 ![Schema Size vs Grammar Class](./schema_size_vs_is_linear.png)
 
-## Snapshot from current run
+If images do not appear on GitHub, commit and push the PNG files together with `README.md`.
 
-On the run in this workspace (JSONSchemaBench snapshot at execution time):
+## Current snapshot (this workspace run)
 
 - Total schemas analyzed: 9,558
 - Linear: 801 (8.4%)
 - General CFG: 8,757 (91.6%)
 
-These values are dataset-version dependent and may change if upstream data updates.
+These values may change if the upstream dataset snapshot changes.
+
+## Citation
+
+If you use this code or results, cite the manuscript as:
+
+```bibtex
+@misc{alpay2026cflreachability,
+  title={Grammar-Constrained (CFL) Reachability: Subcubic Preprocessing, Indexing Trade-offs, and Structured Decoding Semantics},
+  author={Faruk Alpay and Levent Sarioglu},
+  year={2026},
+  eprint={xx},
+  archivePrefix={arXiv},
+  primaryClass={xx},
+  url={xx}
+}
+```
+
+If metadata changes later (arXiv id, class, URL), replace `xx` fields.
