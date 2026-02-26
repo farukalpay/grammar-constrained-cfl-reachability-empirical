@@ -73,8 +73,6 @@ CSV columns in `schema_analysis.csv`:
 
 ![Schema Size vs Grammar Class](./schema_size_vs_is_linear.png)
 
-If images do not appear on GitHub, commit and push the PNG files together with `README.md`.
-
 ## Current snapshot (this workspace run)
 
 - Total schemas analyzed: 9,558
