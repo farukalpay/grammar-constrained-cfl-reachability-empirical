@@ -111,8 +111,6 @@ This creates:
 
 ![Schema Size vs Grammar Class](./schema_size_vs_is_linear.png)
 
-If images do not appear on GitHub, make sure these PNG files are committed and pushed with the README.
-
 ## Snapshot from current run
 
 On the run in this workspace (JSONSchemaBench snapshot at execution time):
