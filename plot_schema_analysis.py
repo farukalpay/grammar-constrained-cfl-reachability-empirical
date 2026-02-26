@@ -1,11 +1,3 @@
-"""
-Generate manuscript-friendly plots from schema_analysis.csv.
-
-Outputs:
-  - class_distribution.png
-  - schema_size_vs_is_linear.png
-"""
-
 import csv
 from pathlib import Path
 
